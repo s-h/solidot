@@ -4,8 +4,8 @@ if exists('g:loaded_solidot')
 endif
 let g:loaded_solidot = 1
 
-if !has('python')
-    echoerr "Error: solidot.vim plugin requires Vim to be compiled with +python"
+if !has('python3')
+    echoerr "Error: solidot.vim plugin requires Vim to be compiled with +python3"
     finish
 endif
 
@@ -34,7 +34,7 @@ endfunction
 function! s:SOLIDOTReset()
     call s:SetSOLIDOTBuffer()
     let b:sl_cur_page=0
-python << EOF
+python3 << EOF
 import vim
 vim.current.buffer[:]=None
 EOF
@@ -49,7 +49,7 @@ function! s:Solidot(url)
     let b:sl_cur_page=b:sl_cur_page+1
     let b:sl_url=b:sl_url."/page/".b:sl_cur_page
     setf config
-python << EOF
+python3 << EOF
 
 import vim
 import requests, re
