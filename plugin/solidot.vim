@@ -5,8 +5,14 @@ endif
 let g:loaded_solidot = 1
 
 if !has('python3')
-    echoerr "Error: solidot.vim plugin requires Vim to be compiled with +python3"
+    echoerr "Error: solidot.vim plugin requires Vim to be compiled with +python"
     finish
+endif
+
+if has('win64')
+    let g:thisos='windows'
+elseif has('unix')
+    let g:thisos='unix'
 endif
 
 if !exists('g:solidot_proxy')
@@ -56,6 +62,7 @@ import requests, re
 from bs4 import BeautifulSoup
 url = 'https://www.solidot.org'
 headers ={'user-agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36'}
+thisos = str(vim.eval("g:thisos"))
 def SOLIDOTShow():
     timeout = int(vim.eval("g:solidot_timeout"))
     r = requests.get(url,headers=headers, timeout=timeout)
@@ -72,7 +79,10 @@ def SOLIDOTShow():
                     vim.current.buffer.append('*' + a.get_text() + '*')
             mainnew = div.find(class_='p_mainnew')
             #print(mainnew.get_text().strip())
-            vim.current.buffer.append(mainnew.get_text().strip().encode('gbk','ignore'))
+            if thisos == "windows":
+                vim.current.buffer.append(mainnew.get_text().strip().encode('gbk','ignore'))
+            else:
+                vim.current.buffer.append(mainnew.get_text().strip())
             vim.current.buffer.append('')
 
 
