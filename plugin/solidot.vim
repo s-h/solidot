@@ -4,12 +4,14 @@ if exists('g:loaded_solidot')
 endif
 let g:loaded_solidot = 1
 
-if !has('python3')
+if !has('python') 
     echoerr "Error: solidot.vim plugin requires Vim to be compiled with +python"
     finish
 endif
 
-if has('win64')
+if has('win32')
+    let g:thisos='windows'
+elseif has('win64')
     let g:thisos='windows'
 elseif has('unix')
     let g:thisos='unix'
@@ -40,7 +42,9 @@ endfunction
 function! s:SOLIDOTReset()
     call s:SetSOLIDOTBuffer()
     let b:sl_cur_page=0
-python3 << EOF
+
+python << EOF
+
 import vim
 vim.current.buffer[:]=None
 EOF
@@ -55,7 +59,7 @@ function! s:Solidot(url)
     let b:sl_cur_page=b:sl_cur_page+1
     let b:sl_url=b:sl_url."/page/".b:sl_cur_page
     setf config
-python3 << EOF
+python << EOF
 
 import vim
 import requests, re
