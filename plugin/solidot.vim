@@ -84,9 +84,9 @@ def SOLIDOTShow():
             mainnew = div.find(class_='p_mainnew')
             #print(mainnew.get_text().strip())
             if thisos == "windows":
-                vim.current.buffer.append(mainnew.get_text().strip().encode('gbk','ignore'))
+                vim.current.buffer.append(mainnew.get_text().strip().replace('\n','').encode('gbk','ignore'))
             else:
-                vim.current.buffer.append(mainnew.get_text().strip())
+                vim.current.buffer.append(mainnew.get_text().strip().replace('\n',''))
             vim.current.buffer.append('')
 
 
